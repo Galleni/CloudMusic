@@ -11,24 +11,20 @@ render(app, {
   debug: process.env.NODE_ENV !== 'production' // true
   // 我的环境变量中，没有这个变量，或者不是production的值
 })
-// 配置路由
-const Router = require('koa-router');
-let router = new Router();
-// 路由规则
-router.get('/',async ctx => {
-  // 使用db.js里面对象的q函数=>
-  // 对应异步操作：1：pormise来包裹,await让其等,async 就需要有
-  let db = require('./models/db');
-  let users = await db.q('select * from users where id=?', [1]);
-  console.log(users)
-  let user = users[0];
-  // console.log(user)
-
-  ctx.render('index', {
-    text: `hello koa,${user.username}`
-  });
+//重写URL，改掉/public
+app.use(async ( ctx,next)=>{
+  //判断，如果当前请求是以/public开头，重写其url再放行
+  if(ctx.request.url.startsWith('/public')){
+    ctx.request.url=ctx.request.url.replace('/public','');
+    // /public/css/x.css  =>/css/x.css
+  }
+  //else 不是public开头,统一放行
+  await next();
 })
 
+const router=require('./routes/user_router');
+//处理静态资源
+app.use(require('koa-static')('./public'));
 // 将路由对象放入到中间件中
 app.use(router.routes());
 // 状态码增强，404=>405+501
