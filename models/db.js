@@ -16,6 +16,7 @@ db.q = (sql, params) => {
         // When done with the connection, release it.
         // 释放连接
         connection.release();
+        console.log(sql, params, results);
         // Handle error after the release.
         if (error) return reject(error);
         // 成功传递数据

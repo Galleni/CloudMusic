@@ -4,14 +4,17 @@ let userController = require('../controllers/user_controller');
 let router = new Router();
 // 路由规则
 //注册页面
-router.get('/register',ctx=>{
-    ctx.render('register')
+router.get('/user/register', ctx => {
+  ctx.render('register')
 })
-.get('/login',ctx=>{
-  ctx.render('login')
+  .get('/user/login', ctx => {
+    ctx.render('login')
   })
   // .post('/check-username', (ctx) => { /*各种操作，包括db*/})
-  .post('/check-username',userController.checkUsername)
+  .post('/user/check-username', userController.checkUsername)//检查用户名
+  .post('/user/do-register', userController.doRegister)
+  .post('/user/do-login', userController.doLogin)
+  .get('/user/test-session',userController.test)
 //测试
 /*
 router.get('/',async ctx => {
