@@ -1,12 +1,17 @@
 // 配置路由
 const Router = require('koa-router');
+let userController = require('../controllers/user_controller');
 let router = new Router();
 // 路由规则
 //注册页面
 router.get('/register',ctx=>{
     ctx.render('register')
 })
-
+.get('/login',ctx=>{
+  ctx.render('login')
+  })
+  // .post('/check-username', (ctx) => { /*各种操作，包括db*/})
+  .post('/check-username',userController.checkUsername)
 //测试
 /*
 router.get('/',async ctx => {
